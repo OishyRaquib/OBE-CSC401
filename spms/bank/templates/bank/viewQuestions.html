@@ -1,0 +1,27 @@
+{% extends 'bank/base.html' %}
+{% block title %}
+View Questions
+{% endblock %}
+<br>
+{% block content %}
+
+    <div class="card card-body">
+        <table class="table table-sm">
+            <tr>
+                <th>Semester</th>
+                <th>Year</th>
+                <th>Question</th>
+            </tr>
+            {% for questions in question %}
+            
+            <tr>
+                <td>{{questions.semester}}</td>
+                <td>{{questions.year}}</td>
+                <td>{{questions.question}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock %}
+</br>
