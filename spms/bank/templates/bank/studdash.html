@@ -1,0 +1,38 @@
+{% extends 'bank/base_stud.html' %}
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+<h5 class="mt-3 ms-3 text-grey">Information</h5>
+<div class="card card-body ms-3 mt-4 " style="width: 600px;">
+        <table class="table table-sm ">
+            
+            <tr>
+                <th>ID</th>
+                <th>Year</th>
+                <th>Department</th>
+                <th>Program</th>
+            </tr>
+            {% for stu in student %}
+            <tr >
+                <td>{{stu.SUserID}}</td>
+                <td>{{stu.enroll_year}}</td>
+                {% for d in student.dep.all %}
+                <td>{{d.deptName}}</td>
+                {% endfor %}
+                {% for p in student.prg.all %}
+                <td>{{p.programName}}</td>
+                {% endfor %}
+            </tr>
+            <style>
+                tr{
+                    border-top: hidden;
+                    border-bottom: hidden;
+                }
+            </style>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock %}

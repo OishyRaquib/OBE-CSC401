@@ -4,16 +4,17 @@ Create a question
 {% endblock %}
 
 {% block content %}
-
-<form class="p-3 me-3 mt-3 table align-middle mb-0 bg-white" action="" method="POST">
-    {% csrf_token %}
-    <ul class="questionList fw-normal form-light list-group text-black">
-        
-        <li id="sem" label="Semester"class=" list-group-item"><label  class="p-2 text-lg-start"><h5>Semester</h5></label><div>{{ form.semester }}</div></li>
-        <li id="year" class="Year list-group-item"><label  class="p-2 text-lg-start"><h5>Year</h5></label><div>{{ form.year }}</div></li>
-        <li id="qtn" class="Question list-group-item"><label  class="p-2 text-lg-start"><h5>Question</h5></label><div>{{ form.question }}</div></li>
-    </ul>
-    <input type="submit" value="Submit" class="mt-3 btn btn-outline-info">
-</form>
-
+    <form class="p-3 me-3 mt-3 table align-middle mb-0 bg-white" action="" method="POST">
+        {% csrf_token %}
+        <ul class="questionList fw-normal form-light list-group text-black">
+            
+            <li id="sem" label="Semester"class=" list-group-item"><label  class="p-2 text-lg-start"><h5>Semester</h5></label><div>{{ form.semester }}</div></li>
+            <li id="year" class="Year list-group-item"><label  class="p-2 text-lg-start"><h5>Year</h5></label><div>{{ form.year }}</div></li>
+            <li id="dur" class="Year list-group-item"><label  class="p-2 text-lg-start"><h5>Duration</h5></label><div>{{ form.duration }}</div></li>
+            <li id="mark" class="Mark list-group-item"><label  class="p-2 text-lg-start"><h5>Mark</h5></label><div>{{ form.mark }}</div></li>
+            <li id="qtn" class="Question list-group-item"><label  class="p-2 text-lg-start"><h5>Question</h5></label><div>{{ form.question }}</div></li>
+            <li id="ans" class="Answer list-group-item"><label  class="p-2 text-lg-start"><h5>Answer</h5></label><div>{{ form.correctAns }}</div></li>
+        </ul>
+        <input type="submit" value="Submit" class="mt-3 btn btn-outline-info" href="{% url 'drafts_' %}">
+    </form>
 {% endblock %}

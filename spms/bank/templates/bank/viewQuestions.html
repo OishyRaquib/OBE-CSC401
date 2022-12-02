@@ -1,6 +1,6 @@
 {% extends 'bank/base.html' %}
 {% block title %}
-View Questions
+View questions
 {% endblock %}
 <br>
 {% block content %}
@@ -8,20 +8,29 @@ View Questions
     <div class="card card-body">
         <table class="table table-sm">
             <tr>
+				<th><input class="form-check-input" type="checkbox" id="selectall"/></th>
                 <th>Semester</th>
                 <th>Year</th>
                 <th>Question</th>
+                <th></th>
+                <th></th>
+				<th></th>
             </tr>
-            {% for questions in question %}
+            {% for ques in questions %}
             
             <tr>
-                <td>{{questions.semester}}</td>
-                <td>{{questions.year}}</td>
-                <td>{{questions.question}}</td>
-            </tr>
+				<td><input type="checkbox" class="checkthis" /></td>
+                <td>{{ques.semester}}</td>
+                <td>{{ques.year}}</td>
+                <td>{{ques.question}}</td>
+                <td><a class="btn btn-sm btn-info text-white" href="{% url 'show_Question' ques.id %}">View</a></td>
+                <td><a class="btn btn-sm btn-info text-white" href="{% url 'update_Question' ques.id %} ">Update</a></td>
+				<td><a class="btn btn-sm btn-info text-white" href="{% url 'delete_Question' ques.id %}">Delete</a></td>
+			</tr>
             {% endfor %}
         </table>
     </div>
 
 {% endblock %}
 </br>
+
