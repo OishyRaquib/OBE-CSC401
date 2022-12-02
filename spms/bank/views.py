@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from pyexpat.errors import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
@@ -9,8 +9,8 @@ from .models import *
 from .forms import QuestionForm, CourseOutlineForm
 # Create your views here.
 def Login(request):
-    if request.method=='POST':
-        Username=request.POST['Username']
+    if request.method=='post':
+        Username=request.POST['username']
         Pass1=request.POST['Password']
         User=authenticate(userID=Username, password=Pass1)
 
@@ -25,7 +25,9 @@ def Login(request):
     return render(request, "bank/login.html")
 
 def signout(request):
-    pass 
+    logout(request)
+    messages.success(request, "Successfully Logout")
+    return render('Signout') 
         
     
 
