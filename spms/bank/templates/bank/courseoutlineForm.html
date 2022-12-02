@@ -1,0 +1,23 @@
+{% extends 'bank/base.html' %}
+{% block title %}
+Create a Course Outline
+{% endblock %}
+
+{% block content %}
+    <form class="p-3 me-3 mt-3 table align-middle mb-0 bg-white" action="" method="POST">
+        {% csrf_token %}
+        <ul class="outlineList fw-normal form-light list-group text-black">
+            
+            <li id="ttl" class="CourseTitle list-group-item"><label  class="p-2 text-lg-start"><h5>Course-Title</h5></label><div>{{ form.CourseTitle }}</div></li>
+            <li id="code" class="courseCode list-group-item"><label  class="p-2 text-lg-start"><h5>Course-Code</h5></label><div>{{ form.courseCode }}</div></li>
+            <li id="crsRsc" class="courseResource list-group-item"><label  class="p-2 text-lg-start"><h5>CourseResource</h5></label><div>{{ form.courseResource }}</div></li>
+            <li id="dur" class="Duration list-group-item"><label  class="p-2 text-lg-start"><h5>Duration</h5></label><div>{{ form.duration }}</div></li>
+            <li id="pRq" class="PreRequisite list-group-item"><label  class="p-2 text-lg-start"><h5>Pre_Requisite</h5></label><div>{{ form.PreRequisite }}</div></li>
+            <li id="crd" class="Credit list-group-item"><label  class="p-2 text-lg-start"><h5>Credit</h5></label><div>{{ form.credit }}</div></li>
+            <li id="hr" class="ContactHour list-group-item"><label  class="p-2 text-lg-start"><h5>ContactHour</h5></label><div>{{ form.contactHour }}</div></li>
+            <li id="grd" class="Grading list-group-item"><label  class="p-2 text-lg-start"><h5>Grading</h5></label><div>{{ form.grading }}</div></li>
+            <li id="Asmnt" class="Assesment list-group-item"><label  class="p-2 text-lg-start"><h5>Assesment</h5></label><div>{{ form.assesment }}</div></li>
+        </ul>
+        <input type="submit" value="Submit" class="mt-3 btn btn-outline-info" href="{% url 'draftsOutline' %}">
+    </form>
+{% endblock %}

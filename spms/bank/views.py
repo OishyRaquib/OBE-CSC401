@@ -6,10 +6,28 @@ from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 
 from .models import * 
-from .forms import QuestionForm
+from .forms import QuestionForm, CourseOutlineForm
 # Create your views here.
-def login(request):
-    return render(request, 'bank/login.html')
+def Login(request):
+    if request.method=='POST':
+        Username=request.POST['Username']
+        Pass1=request.POST['Password']
+        User=authenticate(userID=Username, password=Pass1)
+
+        if User is not None:
+            login(request, User)
+            fname=User.name
+            return render(request, 'bank/navbar.html', {'fname': fname})
+        else:
+            messages.error(request, "Wrong Credentials")
+            return redirect('Signout')
+            
+    return render(request, "bank/login.html")
+
+def signout(request):
+    pass 
+        
+    
 
 #Faculty dashboard
 def dashboard(request):
@@ -68,3 +86,32 @@ def studash(request,pk_stu):
 
     context={'student':student}
     return render(request, 'bank/studdash.html',context)
+
+    
+#Course OUtline
+
+def createCourseOutline(request):
+    form=CourseOutlineForm
+    if request.method=='POST':
+        form=CourseOutlineForm(request.POST)
+        if form.is_valid():
+            try:
+                form.save()
+            except:
+                pass
+    context={'form':form}
+    return render(request, 'bank/courseoutlineForm.html',context)
+
+def drafts_outline(request):
+    courseOutline=CourseOutline.objects.all()
+    return render(request, 'bank/courseOutline_drafts.html',{'courseOutline':courseOutline})
+
+
+def showStatus(request):
+
+
+    return render(request, 'bank/courseOutline_status.html')
+
+def browseOutline(request,pk_outline):
+    courseOutline=CourseOutline.objects.get(id=pk_outline)
+    return render(request,'bank/browse_courseOutline.html', {'courseOutline':courseOutline} )

@@ -90,7 +90,7 @@ class User(models.Model):
     email=models.CharField(max_length=50,blank=True)
     phone=models.IntegerField(blank=True)
     address=models.CharField(max_length=100,blank=True)
-    password=models.IntegerField(blank=True)
+    password=models.IntegerField()
 
     def __str__(self):
         return self.name
@@ -102,4 +102,17 @@ class Student(models.Model):
     enroll_year=models.IntegerField()
     programID=models.ForeignKey(Program,on_delete=models.CASCADE,related_name="prg")
     deptID=models.ForeignKey(Department,on_delete=models.CASCADE,related_name="dep")
-    
+
+class CourseOutline(models.Model):
+
+    CourseTitle=models.CharField(max_length=100, blank=True)
+    courseCode=models.CharField(max_length=20, unique=True)
+    courseResource=models.TextField(max_length=100)
+    duration=models.CharField(max_length=10, blank=True)
+    PreRequisite=models.CharField(max_length=100, blank=True)
+    credit=models.IntegerField()
+    contactHour=models.CharField(max_length=10, blank=True)
+    grading=models.TextField(max_length=100)
+    assesment=models.TextField(max_length=100)
+
+   
