@@ -90,6 +90,7 @@ class User(models.Model):
     email=models.CharField(max_length=50,blank=True)
     phone=models.IntegerField(blank=True)
     address=models.CharField(max_length=100,blank=True)
+    password=models.IntegerField(blank=True)
 
     def __str__(self):
         return self.name
