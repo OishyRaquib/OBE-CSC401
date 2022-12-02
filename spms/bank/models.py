@@ -1,33 +1,5 @@
 from django.db import models
 
-# class Faculty(User):
-#     FUserID=models.OneToOneField(User,max_length=4,on_delete=models.SET_NULL)
-#     position=models.CharField(max_length=30)
-#     room=models.CharField(max_length=5, null=True)
-#     deptID=models.ForeignKey(Department,on_delete=models.SET_NULL)
-
-
-
-# class Section(models.Model):
-#     secID=
-#     secNo=
-#     semester=
-#     year=
-#     FUserID=
-#     CourseID=
-
-# class Course(models.Model):
-#     TYPES=(
-#         ('Major','Major'),
-#         ('Minor','Minor')
-#     )
-#     courseID=models.CharField(max_length=6, null=False)
-#     courseName=models.CharField(max_length=50)
-#     credits=models.IntegerField(max_length=1)
-#     type=models.CharField(choices=TYPES)
-#     programID=models.ForeignKey(Program)
-#     course_deptID=models.ForeignKey(Department)
-
 # class Answer(models.Model):
 #     answer=models.CharField(max_length=1000)
 #     fac_pk=models.ForeignKey(Faculty)
@@ -35,19 +7,6 @@ from django.db import models
 #     q_pk=models.ForeignKey(Question)
 #     co_pk=models.ForeignKey(CO)
 
-
-# class PLO(models.Model):
-#     PLONo=models.CharField()
-#     PLOTitle=
-#     PLODescription=
-#     ProgramID=
-
-# class CO(models.Model):
-#     CONo=models.CharField(max_length=3)
-#     Domain="Cognitive"
-#     Level=models.IntegerField(max_length=1)
-#     Statement=models.CharField(max_length=200)
-#     SecID=models.ForeignKey(Section)
 
 #models
 
@@ -57,16 +16,14 @@ class Question(models.Model):
         ('Spring','Spring'),
         ('Autumn', 'Autumn')
     )
-    # QID=models.AutoField(primary_key=True,auto_created=True)
     semester=models.CharField(max_length=6, choices=SEMS)
     year=models.IntegerField(default=2022)
     duration=models.IntegerField()
     question=models.TextField(max_length=500)
     mark=models.FloatField()
-
-    # totalQuestions=
-    # totalMarks=
     correctAns=models.TextField(max_length=1000)
+    def __str__(self):
+        return self.question
 
 class Department(models.Model):
     deptID=models.CharField(max_length=15)
@@ -82,6 +39,17 @@ class Program(models.Model):
     def __str__(self):
         return self.programName
 
+class Course(models.Model):
+    TYPES=(
+        ('Major','Major'),
+        ('Minor','Minor')
+    )
+    courseID=models.CharField(max_length=6, null=False,unique=True)
+    courseName=models.CharField(max_length=50)
+    credits=models.IntegerField()
+    type=models.CharField(max_length=5,choices=TYPES)
+    programID=models.ForeignKey(Program,on_delete=models.CASCADE,related_name="course_prog")
+    course_deptID=models.ForeignKey(Department,on_delete=models.CASCADE,related_name="course_dep")
 
 class User(models.Model):
     userID=models.CharField(max_length=10,unique=True)
@@ -103,3 +71,35 @@ class Student(models.Model):
     programID=models.ForeignKey(Program,on_delete=models.CASCADE,related_name="prg")
     deptID=models.ForeignKey(Department,on_delete=models.CASCADE,related_name="dep")
     
+
+class Faculty(models.Model):
+    FUserID=models.CharField(max_length=4,unique=True)
+    position=models.CharField(max_length=30)
+    room=models.CharField(max_length=5, null=True)
+    fac_deptID=models.ForeignKey(Department,on_delete=models.CASCADE,related_name="fac_dep")
+
+class Section(models.Model):
+    SEMS=(
+        ('Summer','Summer'),
+        ('Spring','Spring'),
+        ('Autumn', 'Autumn')
+    )
+    semester=models.CharField(max_length=6, choices=SEMS)
+    # secID=models.Integer(max_length=2)
+    secNo=models.IntegerField()
+    year=models.IntegerField(default=2022)
+    fac_id=models.ForeignKey(Faculty, on_delete=models.CASCADE,related_name="faculty_id")
+    CourseID=models.ForeignKey(Course, on_delete=models.CASCADE,related_name="sec_courseid")
+
+class CO(models.Model):
+    CONo=models.CharField(max_length=3,unique=True)
+    Domain="Cognitive"
+    Level=models.IntegerField()
+    Statement=models.TextField(max_length=200)
+    SecID=models.ForeignKey(Section,on_delete=models.CASCADE, related_name="co_sec")
+
+class PLO(models.Model):
+    PLONo=models.CharField(max_length=4,unique=True)
+    PLOTitle=models.TextField(max_length=50)
+    PLODescription=models.TextField(max_length=500)
+    ProgramID=models.ForeignKey(Program, on_delete=models.CASCADE, related_name="plo_prog")

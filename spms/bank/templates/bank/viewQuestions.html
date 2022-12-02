@@ -15,6 +15,7 @@ View questions
                 <th></th>
                 <th></th>
 				<th></th>
+                <th></th>
             </tr>
             {% for ques in questions %}
             
@@ -26,11 +27,14 @@ View questions
                 <td><a class="btn btn-sm btn-info text-white" href="{% url 'show_Question' ques.id %}">View</a></td>
                 <td><a class="btn btn-sm btn-info text-white" href="{% url 'update_Question' ques.id %} ">Update</a></td>
 				<td><a class="btn btn-sm btn-info text-white" href="{% url 'delete_Question' ques.id %}">Delete</a></td>
-			</tr>
+                
+            </tr>
             {% endfor %}
         </table>
-    </div>
+        
 
+    </div>
+    <td><a class="mt-3 ms-3 btn btn-sm btn-info text-white" href="{% url 'question_pdf' %}">PDF all</a></td>
 {% endblock %}
 </br>
 

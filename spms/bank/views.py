@@ -5,8 +5,19 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 
+from django.http import FileResponse
+import io
+# from io import BytesIO
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+# from django.template.loader import get_template
+# from xhtml2pdf import pisa
+# from .utils import render_to_pdf
+# from django.views.generic import View
+
 from .models import * 
-from .forms import QuestionForm
+from .forms import *
 # Create your views here.
 def login(request):
     return render(request, 'bank/login.html')
@@ -15,7 +26,18 @@ def login(request):
 def dashboard(request):
     return render(request, 'bank/facultydash.html')
 
+#Student dashboard
+def studash(request,pk_stu):
+    student=Student.objects.get(id=pk_stu)
+    
+    prg=student.programID_set.all()
+    dep=student.deptID_set.all()
 
+    context={'student':student}
+    return render(request, 'bank/studdash.html',context)
+
+
+#####QUESTION BANK###########
 
 #Create a question
 def createQuestion(request):
@@ -58,13 +80,93 @@ def deleteQuestion(request, question_id):
     question.delete()  
     return redirect('drafts_') 
 
+# Generate single pdf of all questions
+def question_pdf(request):
+    buf = io.BytesIO()
+    c=canvas.Canvas(buf,pagesize=letter,bottomup=0)
+    textobj=c.beginText()
+    textobj.setTextOrigin(inch,inch)
+    textobj.setFont("Helvetica",14)
 
-#Student dashboard
-def studash(request,pk_stu):
-    student=Student.objects.get(id=pk_stu)
+    question=Question.objects.all()
+    data=[]
+    print(len(question))
+
+    data.append("Final Examinations 2022")
+    data.append(" ")
+
+    total_marks=0
+    total_duration=0
+    for q in question:
+        total_marks+=q.mark
+        total_duration+=q.duration
+    num=0
+    data.append("Total marks: "+str(total_marks))
+    data.append(" ")
+    data.append("Total duration: "+str(total_duration))
+    data.append("_________________________________________")
+    data.append(" ")
+    data.append("Answer the following questions.")
+    data.append(" ")
+    data.append(" ")
+    for q in question:
+        # textobj.textLine(q)
+        # data.append(q.semester)
+        # data.append(q.year)
+        # data.append(q.duration)
+        # data.append(q.mark)
+        data.append(str(num+1)+"."+q.question+"    "+str(q.mark)+" marks")
+        data.append(" ")
+        num+=1
+
+    for line in data:
+        textobj.textLine(line)
     
-    prg=student.programID_set.all()
-    dep=student.deptID_set.all()
+    c.drawText(textobj)
+    c.showPage()
+    c.save()
+    buf.seek(0)
 
-    context={'student':student}
-    return render(request, 'bank/studdash.html',context)
+    return FileResponse(buf,as_attachment=True, filename='question.pdf')
+
+# Generate single question pdf
+# def ques_pdf(request,question_id):
+#     buf = io.BytesIO()
+#     c=canvas.Canvas(buf,pagesize=letter,bottomup=0)
+#     textobj=c.beginText()
+#     textobj.setTextOrigin(inch,inch)
+#     textobj.setFont("Helvetica",14)
+
+#     q=Question.objects.get(pk=question_id)
+#     data=[]
+
+#     data.append("Final Examinations "+q.year+" "+q.semester)
+#     data.append(" ")
+
+#     data.append("Total marks: "+str(q.mark))
+#     data.append(" ")
+#     data.append("Total duration: "+str(q.duration))
+#     data.append("_________________________________________")
+#     data.append(" ")
+#     data.append("Answer the following questions.")
+#     data.append(" ")
+#     data.append(" ")
+#     num=0
+#     # for q in question:
+#         # textobj.textLine(q)
+#         # data.append(q.semester)
+#         # data.append(q.year)
+#         # data.append(q.duration)
+#         # data.append(q.mark)
+#     data.append(str(num+1)+"."+q.question+"    "+str(q.mark)+" marks")
+#     data.append(" ")
+
+#     for line in data:
+#         textobj.textLine(line)
+    
+#     c.drawText(textobj)
+#     c.showPage()
+#     c.save()
+#     buf.seek(0)
+
+#     return FileResponse(buf,as_attachment=True, filename='question_.pdf')

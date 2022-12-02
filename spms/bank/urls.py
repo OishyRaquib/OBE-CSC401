@@ -12,6 +12,8 @@ urlpatterns = [
     path('drafts/', views.drafts,name="drafts_"),
     path('show/<question_id>', views.showQuestion,name="show_Question"),
     path('update_question/<question_id>',views.updateQuestion,name="update_Question"),
-    path('delete/<question_id>', views.deleteQuestion,name="delete_Question")
-    
+    path('delete/<question_id>', views.deleteQuestion,name="delete_Question"),
+    path('pdf/', views.question_pdf,name="question_pdf")
+    # path('qpdf/<question_id>', views.ques_pdf,name="ques_pdf")
+
 ]
