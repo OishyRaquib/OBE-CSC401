@@ -15,7 +15,7 @@ urlpatterns = [
 
     #Course Outline:
     path('newOutline/', views.createCourseOutline, name="create_courseOutline"),
-    path('outlineDrafts/', views.drafts_outline,name="draftsOutline"),
+    path('outlineDrafts/', views.drafts_outline,name="drafts_Outline"),
     path('status/', views.showStatus,name="show_Status"),
     path('browse/', views.browseOutline, name="browseOutline"),
     
