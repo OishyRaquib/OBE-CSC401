@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'bank',
+    'django_filters'
+    # 'import-export',
 ]
 
 MIDDLEWARE = [

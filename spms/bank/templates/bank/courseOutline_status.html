@@ -1,0 +1,52 @@
+{% extends 'bank/base.html' %}
+{% block title %}
+Status Board
+{% endblock %}
+{% block content %}
+    <body>       
+
+        <!-- Table -->
+        <table class="mt-3 table align-middle mb-0">
+            <thead>
+              <tr class="table-info">
+                <th scope="col">SL</th>
+                <th scope="col">Course Title</th>
+                <th scope="col">Course ID</th>
+                <th scope="col">Semester</th>
+                <th scope="col">Year</th>
+                <th scope="col">Date</th>
+                <th scope="col">Remarks</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Introduction to Computer Programming</td>
+                <td>CSC101</td>
+                <td>Autumn</td>
+                <td>2022</td>
+                <td>11-09-2022</td>
+                <td class="text-info">Approved</td>
+                <td><button
+                    type="button"
+                    class="text-decoration-none btn btn-link btn-rounded btn-sm fw-bold"
+                    data-mdb-ripple-color="dark"
+                    >
+                    Preview
+                  </button></td>
+                <td><button
+                    type="button"
+                    class="text-decoration-none btn btn-link btn-rounded btn-sm fw-bold"
+                    data-mdb-ripple-color="dark"
+                    >
+                    Edit
+                  </button></td>
+                  
+              </tr>
+             
+            </tbody>
+          </table> 
+</body>
+{% endblock %}

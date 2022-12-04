@@ -1,0 +1,52 @@
+{% extends 'bank/base.html' %}
+{% block title %}
+Drafts
+{% endblock %}
+<br>
+{% block content %}
+
+  
+<table class=" mt-3 table align-middle mb-0">
+  <thead>
+    <tr class="table-info">
+      <!-- <th scope="col">SL</th> -->
+      <th scope="col">Course Title</th>
+      <th scope="col">Course ID</th>
+      <th scope="col">Semester</th>
+      <th scope="col">Year</th>
+      <th scope="col">Credit</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  {% for c in courseOutline %}
+  <tbody>
+    <tr>
+      <!-- <th scope="row">1</th> -->
+      <td>{{c.CourseTitle}}</td>
+      <td>{{c.courseCode}}</td>
+      <td>{{c.semester}}</td>
+      <td>{{c.year}}</td>
+      <td>{{c.credit}}</td>
+      
+      
+      <td><button
+          type="button"
+          class=" text-decoration-none btn btn-link btn-rounded btn-sm fw-bold"
+          data-mdb-ripple-color="dark"
+          
+          >
+          <a href="{% url 'edit_courseOutline' c.id %}" class="ms-3 mt-3 mb-3 btn btn-sm btn-info text-white flex-right">Edit</a>
+          <a class="ms-3 mt-3 mb-3 btn btn-sm btn-info text-white flex-right" href="{% url 'show_Status' %}">Submit</a>
+
+        </button></td>
+        
+    </tr>
+   
+  </tbody>
+  {% endfor %}
+</table> 
+
+
+{% endblock %}
+</br>

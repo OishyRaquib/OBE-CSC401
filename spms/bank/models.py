@@ -1,29 +1,9 @@
 from django.db import models
 
-# class Answer(models.Model):
-#     answer=models.CharField(max_length=1000)
-#     fac_pk=models.ForeignKey(Faculty)
-#     s_pk=models.ForeignKey(Student)
-#     q_pk=models.ForeignKey(Question)
-#     co_pk=models.ForeignKey(CO)
-
 
 #models
 
-class Question(models.Model):
-    SEMS=(
-        ('Summer','Summer'),
-        ('Spring','Spring'),
-        ('Autumn', 'Autumn')
-    )
-    semester=models.CharField(max_length=6, choices=SEMS)
-    year=models.IntegerField(default=2022)
-    duration=models.IntegerField()
-    question=models.TextField(max_length=500)
-    mark=models.FloatField()
-    correctAns=models.TextField(max_length=1000)
-    def __str__(self):
-        return self.question
+
 
 class Department(models.Model):
     deptID=models.CharField(max_length=15)
@@ -40,16 +20,18 @@ class Program(models.Model):
         return self.programName
 
 class Course(models.Model):
-    TYPES=(
-        ('Major','Major'),
-        ('Minor','Minor')
-    )
+    # TYPES=(
+    #     ('Major','Major'),
+    #     ('Minor','Minor')
+    # )
     courseID=models.CharField(max_length=6, null=False,unique=True)
     courseName=models.CharField(max_length=50)
     credits=models.IntegerField()
-    type=models.CharField(max_length=5,choices=TYPES)
+    # type=models.CharField(max_length=5,choices=TYPES)
     programID=models.ForeignKey(Program,on_delete=models.CASCADE,related_name="course_prog")
     course_deptID=models.ForeignKey(Department,on_delete=models.CASCADE,related_name="course_dep")
+    def __str__(self):
+        return self.courseID
 
 class User(models.Model):
     userID=models.CharField(max_length=10,unique=True)
@@ -58,7 +40,7 @@ class User(models.Model):
     email=models.CharField(max_length=50,blank=True)
     phone=models.IntegerField(blank=True)
     address=models.CharField(max_length=100,blank=True)
-    password=models.IntegerField(blank=True)
+    password=models.IntegerField()
 
     def __str__(self):
         return self.name
@@ -103,3 +85,46 @@ class PLO(models.Model):
     PLOTitle=models.TextField(max_length=50)
     PLODescription=models.TextField(max_length=500)
     ProgramID=models.ForeignKey(Program, on_delete=models.CASCADE, related_name="plo_prog")
+
+class CourseOutline(models.Model):
+
+    CourseTitle=models.CharField(max_length=100, blank=True)
+    courseCode=models.CharField(max_length=20, unique=True)
+    courseResource=models.TextField(max_length=100)
+    duration=models.CharField(max_length=10, blank=True)
+    PreRequisite=models.CharField(max_length=100, blank=True)
+    credit=models.IntegerField()
+    contactHour=models.CharField(max_length=30, blank=True)
+    grading=models.TextField(max_length=100)
+    assesment=models.TextField(max_length=100)
+    SEMS=(
+        ('Summer','Summer'),
+        ('Spring','Spring'),
+        ('Autumn', 'Autumn')
+    )
+    semester=models.CharField(max_length=6, choices=SEMS)
+    year=models.IntegerField(default=2022)
+
+class Question(models.Model):
+    SEMS=(
+        ('Summer','Summer'),
+        ('Spring','Spring'),
+        ('Autumn', 'Autumn')
+    )
+    semester=models.CharField(max_length=6, choices=SEMS)
+    year=models.IntegerField(default=2022)
+    duration=models.IntegerField()
+    question=models.TextField(max_length=500)
+    mark=models.FloatField()
+    course_q=models.OneToOneField(Course,on_delete=models.CASCADE,related_name="q_course")
+    correctAns=models.TextField(max_length=1000)
+    def __str__(self):
+        return self.question
+
+class Answer(models.Model):
+    ans=models.CharField(max_length=1000)
+    # fac_pk=models.ForeignKey(Faculty)
+    # s_pk=models.ForeignKey(Student)
+    q_pk=models.ForeignKey(Question,on_delete=models.CASCADE,related_name="ans_qpk")
+    # co_pk=models.ForeignKey(CO)
+

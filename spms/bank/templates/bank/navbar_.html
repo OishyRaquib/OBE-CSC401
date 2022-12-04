@@ -14,10 +14,10 @@
               Course Outline
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="">New</a></li>
-              <li><a class="dropdown-item" href="">Browse</a></li>
-              <li><a class="dropdown-item" href="">Drafts </a></li>
-              <li><a class="dropdown-item" href="">Status</a></li>
+              <li><a class="dropdown-item" href="{% url 'create_courseOutline' %}">New</a></li>
+              <li><a class="dropdown-item" href="{% url 'browseOutline' %}">Browse</a></li>
+              <li><a class="dropdown-item" href="{% url 'drafts_Outline' %}">Drafts </a></li>
+              <li><a class="dropdown-item" href="{% url 'show_Status' %}">Status</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">

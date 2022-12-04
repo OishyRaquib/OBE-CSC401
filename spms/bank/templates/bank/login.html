@@ -30,14 +30,28 @@
             background: hsla(0, 0%, 100%, 0.55);
             backdrop-filter: blur(30px);
             ">
+           
           <div class="card-body p-5 shadow-5 text-center">
             <h2 class="fw-bold mb-5">Sign in to your account</h2>
-            <form>
+
+            
+            <form action="{% url 'dashboard' %}" method="post">
+              {% csrf_token %}
+              
+              <!-- {% for message in messages %}
+               <div class="alert alert- {{ message.tags }} alert-dissmisible fade show" role="alert">
+                <strong>Message: </strong> {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span>aria-hidden="true">&times;</span>
+              </button>
+               </div>
+              {% endfor %} -->
+              
 
               <!-- Username input -->
               <div class="form-outline mb-4">
                 <label class="form-label" for="form3Example3">Username</label>
-                <input type="username" id="form3Example3" class="form-control" />
+                <input type="Username" id="form3Example3" class="form-control" />
                 
               </div>
 
@@ -50,13 +64,8 @@
 
               <!-- Login button -->
 
-
-    
-              <button type="submit" class="btn btn-primary btn-block mb-4 bg-primary text-info"><a href="{% url 'dashboard' %}" class="text-decoration-none text-white"> Login</a>
-                
-              </button>
-
-             
+                <button type="submit" class="btn btn-primary btn-block mb-4 bg-primary text-info" ><li><a href="{% url 'dashboard' %}" class="text-decoration-none text-white">Login</a>
+                </button>
             </form>
           </div>
         </div>
