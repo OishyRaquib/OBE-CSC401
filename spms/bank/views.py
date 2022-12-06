@@ -19,6 +19,12 @@ from reportlab.lib.pagesizes import letter
 from .models import * 
 from .forms import *
 from .filters import QuestionFilter
+
+from django.forms import formset_factory
+from django.contrib import messages
+from django.views.generic import ListView
+from django.views.generic import View
+
 # Create your views here.
 def Login(request):
     if request.method=='post':
@@ -62,18 +68,34 @@ def studash(request,pk_stu):
 
 #Create a question
 def createQuestion(request):
-    
-    if request.method=='POST':
-        form=QuestionForm(request.POST)
-        if form.is_valid():
-            try:
-                form.save()
-                # return render(request, 'bank/drafts.html')
-            except:
-                pass
-        
     form=QuestionForm()
-    context={'form':form}
+    AnswerFormSet=formset_factory(AnswerForm,extra=3)
+    formset=AnswerFormSet()
+    if request.method=='POST':
+        # print(request.POST)
+        form=QuestionForm(request.POST)
+
+        formset=AnswerFormSet(request.POST)
+        # print(formset.is_valid(),form.is_valid(),form.cleaned_data)
+        if form.is_valid() and formset.is_valid():
+            question=form.save()
+            # print(question,84)
+            for f in formset:
+                ansInst=Answer.objects.create(
+                    ans=f.cleaned_data.get('ans'),
+                    q_pk=question,
+                )
+                ansInst.save()
+                print(ansInst)
+            # try:
+                
+            #     # formset.save()
+            #     # return render(request, 'bank/drafts.html')
+            # except:
+            #     pass
+        
+    
+    context={'form':form,'formset':formset}
     return render(request, 'bank/newQuestion.html', context)
 
 #Show all questions
@@ -88,7 +110,9 @@ def drafts(request):
 #Show one question with details
 def showQuestion(request,question_id):
     question=Question.objects.get(pk=question_id)
-    return render(request,'bank/showQuestion.html', {'question':question} )
+    answers=Answer.objects.filter(q_pk=question)
+    context={'question':question,'answers':answers} 
+    return render(request,'bank/showQuestion.html', context)
 
 #Update questions
 def updateQuestion(request,question_id):
@@ -121,14 +145,14 @@ def question_pdf(request):
     data.append(" ")
 
     total_marks=0
-    total_duration=0
+    # total_duration=0
     for q in question:
         total_marks+=q.mark
-        total_duration+=q.duration
+        # total_duration+=q.duration
     num=0
     data.append("Total marks: "+str(total_marks))
     data.append(" ")
-    data.append("Total duration: "+str(total_duration))
+    data.append("Total duration: "+str(50))
     data.append("_________________________________________")
     data.append(" ")
     data.append("Answer the following questions.")

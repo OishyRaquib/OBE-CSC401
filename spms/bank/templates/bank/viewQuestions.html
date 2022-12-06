@@ -12,7 +12,7 @@ View Questions
         </form>
         <table class="table table-sm">
             <tr>
-				<th><input class="form-check-input" type="checkbox" id="selectall"/></th>
+				<th>Select</th>
                 <th>Course ID</th>
                 <th>Semester</th>
                 <th>Year</th>
@@ -24,9 +24,9 @@ View Questions
             </tr>
             {% for ques in questions %}
             
-            <tr>
-				<td><input type="checkbox" class="checkthis" /></td>
-                <td>{{ques.course_q}}</td>
+            <tr id="{{ques.id}}">
+				<td><input type="checkbox" name="question_id[]" class="questionscheck" id="selected_questions" value="{{ques.pk}}" /></td>
+                <td>{{ques.course_ID}}</td>
                 <td>{{ques.semester}}</td>
                 <td>{{ques.year}}</td>
                 <td>{{ques.question}}</td>
@@ -37,10 +37,52 @@ View Questions
             </tr>
             {% endfor %}
         </table>
-        
-
     </div>
+    <script>
+        $(document).ready(function(){
+            $('#selected').click(function(){
+                // if(confirm("Are you sure you want to delete question?")){
+                    var id=[];
+                    var csrf=$('input[name=csrfmiddlewaretoken').val();
+                    $(':checkbox:checked').each(function(i){
+                        id[i]=$(this).val()
+                    });
+                    if(id.length==0){
+                        alert("Please select questions first")
+                    }
+                    else{
+                        console.log(id);
+                        for(var i=0;i<id.length;i++){
+                            console.log("Values:",i.year);
+                        }
+                        sessionStorage.setItem('questions',JSON.stringify(id));
+                        window.location.href='newExam.html';
+                        
+                        
+                        $.ajax({
+                            url: '.',
+                            method: "POST",
+                            data:{
+                                id,
+                                'csrfmiddlewaretoken':"{{ csrf_token }}",
+                            },
+                            success:function(response){
+                                // for(var i=0;i<id.length;i++){
+                                //     $('tr#'+id[i]+'').css('background-color','#ccc');
+                                //     $('tr#'+id[i]+'').fadeOut('slow');
+                                // }
+                            }
+                        })
+                    }
+                // }  
+            }
+            );
+        }
+        );
+    </script>
     <td><a class="mt-3 ms-3 btn btn-sm btn-info text-white" href="{% url 'question_pdf' %}">Download all</a></td>
-{% endblock %}
+    <td><a class="mt-3 ms-3 btn btn-sm btn-info text-white" id="delete_btn" >Delete</a></td>
+
+    {% endblock %}
 </br>
 

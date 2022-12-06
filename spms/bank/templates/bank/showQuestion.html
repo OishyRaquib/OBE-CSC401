@@ -10,7 +10,7 @@ Question details
         <h6>Course ID</h6>
       </div>
       <div class="col-8">
-        {{question.course_q}}
+        {{question.course_ID}}
       </div>
    </div>
     <div class="mt-3 row justify-content-start">
@@ -54,14 +54,19 @@ Question details
           {{question.question}}
         </div>
     </div>
+    {% for a in answers %}
     <div class="mt-2 row justify-content-start">
+       {% if a.ans %}
         <div class="col-1">
           <h6>Answer</h6>
         </div>
         <div class="col-8">
-          {{question.correctAns}}
-        </div>
+          {{a.ans}}
+        {% endif %}
     </div>
+      
+    </div>
+    {% endfor %}
 </div>
 
 {% endblock %}

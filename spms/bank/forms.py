@@ -1,11 +1,11 @@
 from django.forms import ModelForm
 from django import forms
-from .models import CourseOutline , Question
+from .models import CourseOutline , Question, Answer
 
 class QuestionForm(forms.ModelForm):
     class Meta:
         model=Question
-        fields=['semester', 'year','duration','mark','question','course_q','correctAns']
+        fields=['semester', 'year','duration','mark','question','course_ID']
         widgets={
             'semester':forms.Select(attrs={'class':'form-control','placeholder':'Select'}),
             'year':forms.TextInput(attrs={'class':'form-control'}),
@@ -13,8 +13,17 @@ class QuestionForm(forms.ModelForm):
             'mark':forms.NumberInput(attrs={'class':'form-control','placeholder':'Enter weight'}),
             'question':forms.Textarea(attrs={'class':'form-control','placeholder':'Type your question here'}),
             'course':forms.Select(attrs={'class':'form-control','placeholder':'Select'}),
-            'correctAns':forms.Textarea(attrs={'class':'form-control','placeholder':'Type your answer here'})
+            # 'correctAns':forms.Textarea(attrs={'class':'form-control','placeholder':'Type your answer here'})
         }
+
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model=Answer
+        fields=['ans']
+        widgets={
+            'ans':forms.Textarea(attrs={'class':'form-control','placeholder':'Type your answer here'})
+        }
+
 
 class CourseOutlineForm(ModelForm):
     class Meta:

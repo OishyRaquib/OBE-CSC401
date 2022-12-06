@@ -113,11 +113,11 @@ class Question(models.Model):
     )
     semester=models.CharField(max_length=6, choices=SEMS)
     year=models.IntegerField(default=2022)
-    duration=models.IntegerField()
+    duration=models.CharField(max_length=10)
     question=models.TextField(max_length=500)
     mark=models.FloatField()
-    course_q=models.OneToOneField(Course,on_delete=models.CASCADE,related_name="q_course")
-    correctAns=models.TextField(max_length=1000)
+    course_ID=models.OneToOneField(Course,on_delete=models.CASCADE,related_name="q_course")
+    # correctAns=models.TextField(max_length=1000)
     def __str__(self):
         return self.question
 
