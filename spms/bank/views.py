@@ -26,32 +26,35 @@ from django.views.generic import ListView
 from django.views.generic import View
 
 # Create your views here.
-def Login(request):
-    if request.method=='post':
-        Username=request.POST['username']
-        Pass1=request.POST['Password']
-        User=authenticate(userID=Username, password=Pass1)
-
-        if User is not None:
-            login(request, User)
-            fname=User.name
-            return render(request, 'bank/navbar.html', {'fname': fname})
-        else:
-            messages.error(request, "Wrong Credentials")
-            return redirect('Signout')
-            
-    return render(request, "bank/login.html")
+def login_user(request):
+    #form=LoginForm(request.POST or None)
+    if request.method=="POST":
+        #if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None: #and is_admin:
+                login(request, user)
+                return redirect('dashboard')
+            else:
+                messages.success(request, ("There was an error logging in, Try again"))
+                return redirect('login')
+    else:        
+        return render(request, "bank/login.html", {})
 
 def signout(request):
     logout(request)
     messages.success(request, "Successfully Logout")
     return render('Signout') 
-        
-    
+
+#def faculty(request):
+    #return render('bank/facultydash.html') 
+
+#def student(request):
+    #return render('bank/studdash.html')  
 
 #Faculty dashboard
-def dashboard(request):
-    return render(request, 'bank/facultydash.html')
+
 
 #Student dashboard
 def studash(request,pk_stu):
@@ -63,6 +66,9 @@ def studash(request,pk_stu):
     context={'student':student}
     return render(request, 'bank/studdash.html',context)
 
+    
+def dashboard(request):
+    return render(request, 'bank/facultydash.html')
 
 #####QUESTION BANK###########
 
