@@ -4,7 +4,7 @@ Drafts
 {% endblock %}
 <br>
 {% block content %}
-
+<div class="p-3">{{myFilter.form}}</div>
   
 <table class=" mt-3 table align-middle mb-0">
   <thead>
@@ -33,9 +33,7 @@ Drafts
       <td><button
           type="button"
           class=" text-decoration-none btn btn-link btn-rounded btn-sm fw-bold"
-          data-mdb-ripple-color="dark"
-          
-          >
+          data-mdb-ripple-color="dark">
 
           <a href="{% url 'edit_courseOutline' c.id %}" class="ms-3 mt-3 mb-3 btn btn-sm btn-info text-white flex-right">Edit</a>
           <a href="{% url 'delete_outline' c.id %}" class="ms-3 mt-3 mb-3 btn btn-sm btn-info text-white flex-right">Delete</a>

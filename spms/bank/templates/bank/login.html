@@ -31,41 +31,35 @@
             backdrop-filter: blur(30px);
             ">
            
-          <div class="card-body p-5 shadow-5 text-center">
-            <h2 class="fw-bold mb-5">Sign in to your account</h2>
+           {% if messages %}
+           {% for message in messages %}
+                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                   {{ message }}
+                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                 </div>
+           {% endfor %}
+        {% endif %}
+         <div class="card-body p-5 shadow-5 text-center">
+           <h2 class="fw-bold mb-5">Sign in to your account</h2>
+           
+           <form action="" method=POST>
+             {% csrf_token %}
+
+             <form>
+               <div class="mb-3">
+                 <label for="exampleInputEmail1" class="form-label">Username</label>
+                 <input type="text" class="form-control" name="username" aria-describedby="emailHelp">
+               </div>
+
+               <div class="mb-3">
+                 <label for="exampleInputPassword1" class="form-label">Password</label>
+                 <input type="password" class="form-control" name="password">
+               </div>
+             <!-- Login button -->
+
+             <button type="submit" class="btn btn-dark">Submit</button>
 
             
-            <form action="{% url 'dashboard' %}" method="post">
-              {% csrf_token %}
-              
-              <!-- {% for message in messages %}
-               <div class="alert alert- {{ message.tags }} alert-dissmisible fade show" role="alert">
-                <strong>Message: </strong> {{ message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span>aria-hidden="true">&times;</span>
-              </button>
-               </div>
-              {% endfor %} -->
-              
-
-              <!-- Username input -->
-              <div class="form-outline mb-4">
-                <label class="form-label" for="form3Example3">Username</label>
-                <input type="Username" id="form3Example3" class="form-control" />
-                
-              </div>
-
-              <!-- Password input -->
-              <div class="form-outline mb-4">
-                <label class="form-label" for="form3Example4">Password</label>
-                <input type="password" id="form3Example4" class="form-control" />
-               
-              </div>
-
-              <!-- Login button -->
-
-                <button type="submit" class="btn btn-primary btn-block mb-4 bg-primary text-info" ><li><a href="{% url 'dashboard' %}" class="text-decoration-none text-white">Login</a>
-                </button>
             </form>
           </div>
         </div>

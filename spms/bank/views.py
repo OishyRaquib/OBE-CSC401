@@ -39,22 +39,19 @@ def login_user(request):
             else:
                 messages.success(request, ("There was an error logging in, Try again"))
                 return redirect('login')
-    else:        
+    else:
         return render(request, "bank/login.html", {})
 
 def signout(request):
     logout(request)
     messages.success(request, "Successfully Logout")
     return render('Signout') 
-
-#def faculty(request):
-    #return render('bank/facultydash.html') 
-
-#def student(request):
-    #return render('bank/studdash.html')  
+        
+    
 
 #Faculty dashboard
-
+def dashboard(request):
+    return render(request, 'bank/facultydash.html')
 
 #Student dashboard
 def studash(request,pk_stu):
@@ -66,9 +63,6 @@ def studash(request,pk_stu):
     context={'student':student}
     return render(request, 'bank/studdash.html',context)
 
-    
-def dashboard(request):
-    return render(request, 'bank/facultydash.html')
 
 #####QUESTION BANK###########
 
@@ -270,7 +264,11 @@ def createCourseOutline(request):
 
 def drafts_outline(request):
     courseOutline=CourseOutline.objects.all()
-    return render(request, 'bank/courseOutline_drafts.html',{'courseOutline':courseOutline})
+    myFilter=CourseOutlineFilter(request.GET, queryset=courseOutline)
+    courseOutline=myFilter.qs
+    context={'courseOutline':courseOutline,'myFilter':myFilter}
+
+    return render(request, 'bank/courseOutline_drafts.html',context)
 
 def viewOutline(request,outline_id):
     courseOutline=CourseOutline.objects.get(pk=outline_id)

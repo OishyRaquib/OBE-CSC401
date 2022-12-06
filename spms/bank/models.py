@@ -95,8 +95,8 @@ class CourseOutline(models.Model):
     days=models.TextField(blank=True)
     name=models.CharField(max_length=50)
     email=models.TextField()
-    mob=models.CharField(max_length=11,blank=True)
-    office=models.CharField(max_length=25,blank=True)
+    mob=models.CharField(max_length=11,blank=True,null=True)
+    office=models.CharField(max_length=25,blank=True,null=True)
     course_descrip=models.TextField()
     mark=models.FloatField()
 
@@ -133,7 +133,7 @@ class Question(models.Model):
         return self.question
 
 class Answer(models.Model):
-    ans=models.CharField(max_length=1000)
+    ans=models.CharField(max_length=1000,null=True,blank=True)
     # fac_pk=models.ForeignKey(Faculty)
     # s_pk=models.ForeignKey(Student)
     q_pk=models.ForeignKey(Question,on_delete=models.CASCADE,related_name="ans_qpk")
