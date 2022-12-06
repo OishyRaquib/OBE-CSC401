@@ -73,30 +73,18 @@ class Section(models.Model):
     fac_id=models.ForeignKey(Faculty, on_delete=models.CASCADE,related_name="faculty_id")
     CourseID=models.ForeignKey(Course, on_delete=models.CASCADE,related_name="sec_courseid")
 
-class CO(models.Model):
-    CONo=models.CharField(max_length=3,unique=True)
-    Domain="Cognitive"
-    Level=models.IntegerField()
-    Statement=models.TextField(max_length=200)
-    SecID=models.ForeignKey(Section,on_delete=models.CASCADE, related_name="co_sec")
 
-class PLO(models.Model):
-    PLONo=models.CharField(max_length=4,unique=True)
-    PLOTitle=models.TextField(max_length=50)
-    PLODescription=models.TextField(max_length=500)
-    ProgramID=models.ForeignKey(Program, on_delete=models.CASCADE, related_name="plo_prog")
 
 class CourseOutline(models.Model):
-
     CourseTitle=models.CharField(max_length=100, blank=True)
-    courseCode=models.CharField(max_length=20, unique=True)
-    courseResource=models.TextField(max_length=100)
+    courseCode=models.CharField(max_length=20)
+    courseResource=models.TextField()
     duration=models.CharField(max_length=10, blank=True)
     PreRequisite=models.CharField(max_length=100, blank=True)
     credit=models.IntegerField()
     contactHour=models.CharField(max_length=30, blank=True)
-    grading=models.TextField(max_length=100)
-    assesment=models.TextField(max_length=100)
+    grading=models.TextField()
+    assesment=models.TextField()
     SEMS=(
         ('Summer','Summer'),
         ('Spring','Spring'),
@@ -104,6 +92,29 @@ class CourseOutline(models.Model):
     )
     semester=models.CharField(max_length=6, choices=SEMS)
     year=models.IntegerField(default=2022)
+    days=models.TextField(blank=True)
+    name=models.CharField(max_length=50)
+    email=models.TextField()
+    mob=models.CharField(max_length=11,blank=True)
+    office=models.CharField(max_length=25,blank=True)
+    course_descrip=models.TextField()
+    mark=models.FloatField()
+
+
+class CO(models.Model):
+    CONo=models.CharField(max_length=3,unique=True)
+    Domain=models.CharField(max_length=9)
+    Level=models.IntegerField()
+    Statement=models.TextField(max_length=200)
+    # SecID=models.ForeignKey(Section,on_delete=models.CASCADE, related_name="co_sec")
+    out_pk=models.ForeignKey(CourseOutline,on_delete=models.CASCADE,related_name="out_pk")
+
+class PLO(models.Model):
+    PLONo=models.CharField(max_length=4,unique=True)
+    PLOTitle=models.TextField(max_length=50)
+    PLODescription=models.TextField(max_length=500)
+    # ProgramID=models.ForeignKey(Program, on_delete=models.CASCADE, related_name="plo_prog")
+    outly_pk=models.ForeignKey(CourseOutline,on_delete=models.CASCADE,related_name="outly_pk")
 
 class Question(models.Model):
     SEMS=(
@@ -114,7 +125,7 @@ class Question(models.Model):
     semester=models.CharField(max_length=6, choices=SEMS)
     year=models.IntegerField(default=2022)
     duration=models.CharField(max_length=10)
-    question=models.TextField(max_length=500)
+    question=models.TextField()
     mark=models.FloatField()
     course_ID=models.OneToOneField(Course,on_delete=models.CASCADE,related_name="q_course")
     # correctAns=models.TextField(max_length=1000)

@@ -13,8 +13,11 @@ Create a question
             <li id="dur" class="Year list-group-item"><label  class="p-2 text-lg-start"><h5>Duration</h5></label><div>{{ form.duration }}</div></li>
             <li id="mark" class="Mark list-group-item"><label  class="p-2 text-lg-start"><h5>Mark</h5></label><div>{{ form.mark }}</div></li>
             <li id="qtn" class="Question list-group-item"><label  class="p-2 text-lg-start"><h5>Question</h5></label><div>{{ form.question }}</div></li>
-
-            <li id="ans" class="list-group-item"><label  class="p-2 text-lg-start"><h5>Answer</h5></label><div>{{ formset.as_p }}</div></li>
+            
+            <li id="ans" class="list-group-item">
+                <label  class="p-2 text-lg-start"><h5>Answer</h5></label>
+                {{ formset.as_p }}
+            </li>
         </ul>
         <input type="submit" value="Submit" class="mt-3 btn btn-outline-info" href="{% url 'drafts_' %}">
     </form>

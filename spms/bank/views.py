@@ -18,7 +18,7 @@ from reportlab.lib.pagesizes import letter
 
 from .models import * 
 from .forms import *
-from .filters import QuestionFilter
+from .filters import QuestionFilter,CourseOutlineFilter
 
 from django.forms import formset_factory
 from django.contrib import messages
@@ -76,7 +76,7 @@ def createQuestion(request):
         form=QuestionForm(request.POST)
 
         formset=AnswerFormSet(request.POST)
-        # print(formset.is_valid(),form.is_valid(),form.cleaned_data)
+        print(formset.is_valid(),form.is_valid(),form.cleaned_data)
         if form.is_valid() and formset.is_valid():
             question=form.save()
             # print(question,84)
@@ -87,12 +87,6 @@ def createQuestion(request):
                 )
                 ansInst.save()
                 print(ansInst)
-            # try:
-                
-            #     # formset.save()
-            #     # return render(request, 'bank/drafts.html')
-            # except:
-            #     pass
         
     
     context={'form':form,'formset':formset}
@@ -117,11 +111,24 @@ def showQuestion(request,question_id):
 #Update questions
 def updateQuestion(request,question_id):
     question=Question.objects.get(pk=question_id)
+    # answers=Answer.objects.filter(q_pk=question)
     form=QuestionForm(request.POST or None,instance=question)
+    # AnswerFormSet=formset_factory(AnswerForm)
+    # formset=AnswerFormSet()
+    # questions=form.save()
+    # print(question,84)
     if form.is_valid():
         form.save()
         return redirect('drafts_')
-    return render(request, 'bank/updateQuestion.html',{'question':question, 'form':form})
+    # for f in answers:
+    #     ansInst=Answer.objects.update(
+    #         ans=f.cleaned_data.get('ans'),
+    #         q_pk=questions,
+    #     )
+    #     ansInst.save()
+
+    context={'question':question,'form':form}
+    return render(request, 'bank/updateQuestion.html',context)
 
 # #Delete questions
 def deleteQuestion(request, question_id):  
@@ -224,21 +231,51 @@ def question_pdf(request):
 ###############Course OUtline#####################
 
 def createCourseOutline(request):
-    form=CourseOutlineForm
+    form=CourseOutlineForm()
+    COFormSet=formset_factory(COForm, extra=7)
+    PLOFormSet=formset_factory(PLOForm, extra=5)
+    formset_=PLOFormSet
+    formset=COFormSet
     if request.method=='POST':
         form=CourseOutlineForm(request.POST)
-        if form.is_valid():
-            try:
-                form.save()
-            except:
-                pass
-    context={'form':form}
+        formset=COFormSet(request.POST)
+        formset_=PLOFormSet(request.POST)
+        if form.is_valid() and formset.is_valid() and formset_.is_valid():
+            outline=form.save()
+            for f in formset:
+                coInst=CO.objects.create(
+                        CONo=f.cleaned_data.get('CONo'),
+                        Domain=f.cleaned_data.get('Domain'),
+                        Level=f.cleaned_data.get('Level'),
+                        Statement=f.cleaned_data.get('Statement'),
+                        out_pk=outline,
+                    )
+                coInst.save()
+            for p in formset_:
+                poInst=PLO.objects.create(
+                        PLONo=p.cleaned_data.get('PLONo'),
+                        PLOTitle=p.cleaned_data.get('PLOTitle'),
+                        PLODescription=p.cleaned_data.get('PLODescription'),
+                        outly_pk=outline,
+                    )
+                poInst.save()
+    context={'form':form,'formset':formset,'formset_':formset_}
     return render(request, 'bank/courseoutlineForm.html',context)
 
 def drafts_outline(request):
     courseOutline=CourseOutline.objects.all()
     return render(request, 'bank/courseOutline_drafts.html',{'courseOutline':courseOutline})
 
+def viewOutline(request,outline_id):
+    courseOutline=CourseOutline.objects.get(pk=outline_id)
+    context={'courseOutline':courseOutline}
+    return render(request, 'bank/viewOutline.html',context)
+
+# #Delete course outlines
+def deleteOutline(request, outline_id):  
+    outlines = CourseOutline.objects.get(pk=outline_id)  
+    outlines.delete()  
+    return redirect('drafts_Outline') 
 
 def showStatus(request):
     return render(request, 'bank/courseOutline_status.html')

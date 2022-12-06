@@ -36,8 +36,9 @@ Drafts
           data-mdb-ripple-color="dark"
           
           >
+
           <a href="{% url 'edit_courseOutline' c.id %}" class="ms-3 mt-3 mb-3 btn btn-sm btn-info text-white flex-right">Edit</a>
-          <a class="ms-3 mt-3 mb-3 btn btn-sm btn-info text-white flex-right" href="{% url 'show_Status' %}">Submit</a>
+          <a href="{% url 'delete_outline' c.id %}" class="ms-3 mt-3 mb-3 btn btn-sm btn-info text-white flex-right">Delete</a>
 
         </button></td>
         
