@@ -1,5 +1,14 @@
 # OBE-CSC401
 
+Users:
+Username: admin
+Password: admin
+
+Superuser:
+Username: admin
+Password: admin
+
+
 ## Quick installation
 You can setup a virtual environment installing virtualenv and typing the following commands in terminal:
 
